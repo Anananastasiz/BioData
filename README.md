@@ -31,3 +31,4 @@
 ```bash
 git clone https://github.com/YOUR_USERNAME/biotime-db-manager.git
 cd biotime-db-manager
+<img width="1781" height="985" alt="image" src="https://github.com/user-attachments/assets/07a2246a-b6f9-43da-9459-237bff6ea00e" />
