@@ -1,0 +1,85 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">Аналитика данных BioTIME</h1>
+    
+    <div class="row mb-4">
+        <div class="col-md-3">
+            <div class="card bg-primary text-white text-center">
+                <div class="card-body">
+                    <h3>{{ stats.total_studies }}</h3>
+                    <p>Всего исследований</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-success text-white text-center">
+                <div class="card-body">
+                    <h3>{{ stats.total_species }}</h3>
+                    <p>Всего видов (суммарно)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-info text-white text-center">
+                <div class="card-body">
+                    <h3>{{ stats.avg_duration }}</h3>
+                    <p>Средняя длительность (лет)</p>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-3">
+            <div class="card bg-warning text-white text-center">
+                <div class="card-body">
+                    <h3>{{ stats.unique_habitats }}</h3>
+                    <p>Уникальных хабитатов</p>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="fig1"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="fig2"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="fig3"></div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6 mb-4">
+            <div class="card">
+                <div class="card-body">
+                    <div id="fig4"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    const fig1 = {{ graphs.fig1|safe }};
+    const fig2 = {{ graphs.fig2|safe }};
+    const fig3 = {{ graphs.fig3|safe }};
+    const fig4 = {{ graphs.fig4|safe }};
+    
+    Plotly.newPlot('fig1', fig1.data, fig1.layout);
+    Plotly.newPlot('fig2', fig2.data, fig2.layout);
+    Plotly.newPlot('fig3', fig3.data, fig3.layout);
+    Plotly.newPlot('fig4', fig4.data, fig4.layout);
+</script>
+{% endblock %}

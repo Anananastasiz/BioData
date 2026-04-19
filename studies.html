@@ -1,0 +1,95 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h1>Исследования</h1>
+        <a href="{{ url_for('add_study') }}" class="btn btn-primary">➕ Новое исследование</a>
+    </div>
+    
+    <!-- Фильтры -->
+    <div class="card mb-4">
+        <div class="card-body">
+            <form method="GET" class="row g-3">
+                <div class="col-md-4">
+                    <label class="form-label">Царство (REALM)</label>
+                    <select name="realm" class="form-select">
+                        <option value="">Все</option>
+                        {% for realm in realms %}
+                        <option value="{{ realm }}" {% if selected_realm == realm %}selected{% endif %}>{{ realm }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4">
+                    <label class="form-label">Таксон</label>
+                    <select name="taxa" class="form-select">
+                        <option value="">Все</option>
+                        {% for taxon in taxas %}
+                        <option value="{{ taxon }}" {% if selected_taxa == taxon %}selected{% endif %}>{{ taxon }}</option>
+                        {% endfor %}
+                    </select>
+                </div>
+                <div class="col-md-4 d-flex align-items-end">
+                    <button type="submit" class="btn btn-primary">Применить</button>
+                    <a href="{{ url_for('studies') }}" class="btn btn-secondary ms-2">Сбросить</a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+    <!-- Таблица исследований -->
+    <div class="table-responsive">
+        <table class="table table-striped table-hover">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Название</th>
+                    <th>Царство</th>
+                    <th>Климат</th>
+                    <th>Таксон</th>
+                    <th>Годы</th>
+                    <th>Видов</th>
+                    <th>Действия</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for study in studies %}
+                <tr>
+                    <td>{{ study.study_id }}</td>
+                    <td><a href="{{ url_for('study_detail', study_id=study.id) }}">{{ study.title[:60] }}...</a></td>
+                    <td>{{ study.realm }}</td>
+                    <td>{{ study.climate }}</td>
+                    <td>{{ study.taxa }}</td>
+                    <td>{{ study.start_year }}-{{ study.end_year }}</td>
+                    <td>{{ study.number_of_species }}</td>
+                    <td>
+                        <a href="{{ url_for('study_detail', study_id=study.id) }}" class="btn btn-sm btn-info">Просмотр</a>
+                        <a href="{{ url_for('edit_study', study_id=study.id) }}" class="btn btn-sm btn-warning">Редакт</a>
+                        <form method="POST" action="{{ url_for('delete_study', study_id=study.id) }}" style="display: inline;" onsubmit="return confirm('Удалить исследование?')">
+                            <button type="submit" class="btn btn-sm btn-danger">Удалить</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+    
+    <!-- Пагинация -->
+    {% if pagination.pages > 1 %}
+    <nav>
+        <ul class="pagination">
+            {% for page in pagination.iter_pages() %}
+                {% if page %}
+                    <li class="page-item {% if page == pagination.page %}active{% endif %}">
+                        <a class="page-link" href="{{ url_for('studies', page=page, realm=selected_realm, taxa=selected_taxa) }}">{{ page }}</a>
+                    </li>
+                {% else %}
+                    <li class="page-item disabled"><span class="page-link">...</span></li>
+                {% endif %}
+            {% endfor %}
+        </ul>
+    </nav>
+    {% endif %}
+</div>
+{% endblock %}

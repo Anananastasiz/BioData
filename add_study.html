@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>➕ Добавление нового исследования</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">ID исследования (BioTIME ID) *</label>
+                            <input type="number" name="study_id" class="form-control" required>
+                            <small class="text-muted">Уникальный идентификатор из базы BioTIME</small>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Царство (REALM) *</label>
+                                <select name="realm" class="form-select" required>
+                                    <option value="">Выберите...</option>
+                                    <option value="Terrestrial">Terrestrial (Наземные)</option>
+                                    <option value="Marine">Marine (Морские)</option>
+                                    <option value="Freshwater">Freshwater (Пресноводные)</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Климат</label>
+                                <select name="climate" class="form-select">
+                                    <option value="">Выберите...</option>
+                                    <option value="Temperate">Temperate (Умеренный)</option>
+                                    <option value="Tropical">Tropical (Тропический)</option>
+                                    <option value="Polar">Polar (Полярный)</option>
+                                    <option value="Global">Global (Глобальный)</option>
+                                </select>
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Название исследования *</label>
+                            <input type="text" name="title" class="form-control" required>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Таксон</label>
+                                <input type="text" name="taxa" class="form-control" placeholder="например, Birds, Fish, Plants">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Хабитат</label>
+                                <input type="text" name="habitat" class="form-control" placeholder="например, Forest, Reef, Grassland">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Биом</label>
+                            <input type="text" name="biome_map" class="form-control" placeholder="например, Temperate broadleaf and mixed forests">
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Год начала</label>
+                                <input type="number" name="start_year" class="form-control" placeholder="ГГГГ">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Год окончания</label>
+                                <input type="number" name="end_year" class="form-control" placeholder="ГГГГ">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Широта (latitude)</label>
+                                <input type="text" name="cent_lat" class="form-control" placeholder="например, 45.5">
+                                <small class="text-muted">От -90 до 90</small>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Долгота (longitude)</label>
+                                <input type="text" name="cent_long" class="form-control" placeholder="например, -93.2">
+                                <small class="text-muted">От -180 до 180</small>
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Число видов</label>
+                                <input type="number" name="number_of_species" class="form-control" placeholder="0">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="protected_area" class="form-check-input" id="protected">
+                            <label class="form-check-label" for="protected">Охраняемая территория</label>
+                        </div>
+                        
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">💾 Сохранить</button>
+                            <a href="{{ url_for('studies') }}" class="btn btn-secondary">❌ Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

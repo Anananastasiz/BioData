@@ -1,0 +1,100 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-8">
+            <div class="card">
+                <div class="card-header">
+                    <h3>✏️ Редактирование исследования #{{ study.study_id }}</h3>
+                </div>
+                <div class="card-body">
+                    <form method="POST">
+                        <div class="mb-3">
+                            <label class="form-label">ID исследования (BioTIME ID)</label>
+                            <input type="text" class="form-control" value="{{ study.study_id }}" disabled>
+                            <small class="text-muted">ID нельзя изменить</small>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Царство (REALM)</label>
+                                <select name="realm" class="form-select">
+                                    <option value="Terrestrial" {% if study.realm == 'Terrestrial' %}selected{% endif %}>Terrestrial</option>
+                                    <option value="Marine" {% if study.realm == 'Marine' %}selected{% endif %}>Marine</option>
+                                    <option value="Freshwater" {% if study.realm == 'Freshwater' %}selected{% endif %}>Freshwater</option>
+                                </select>
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Климат</label>
+                                <input type="text" name="climate" class="form-control" value="{{ study.climate }}">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Название исследования</label>
+                            <input type="text" name="title" class="form-control" value="{{ study.title }}" required>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Таксон</label>
+                                <input type="text" name="taxa" class="form-control" value="{{ study.taxa }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Хабитат</label>
+                                <input type="text" name="habitat" class="form-control" value="{{ study.habitat }}">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3">
+                            <label class="form-label">Биом</label>
+                            <input type="text" name="biome_map" class="form-control" value="{{ study.biome_map }}">
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Год начала</label>
+                                <input type="number" name="start_year" class="form-control" value="{{ study.start_year }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Год окончания</label>
+                                <input type="number" name="end_year" class="form-control" value="{{ study.end_year }}">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Широта</label>
+                                <input type="text" name="cent_lat" class="form-control" value="{{ study.cent_lat }}">
+                            </div>
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Долгота</label>
+                                <input type="text" name="cent_long" class="form-control" value="{{ study.cent_long }}">
+                            </div>
+                        </div>
+                        
+                        <div class="row">
+                            <div class="col-md-6 mb-3">
+                                <label class="form-label">Число видов</label>
+                                <input type="number" name="number_of_species" class="form-control" value="{{ study.number_of_species }}">
+                            </div>
+                        </div>
+                        
+                        <div class="mb-3 form-check">
+                            <input type="checkbox" name="protected_area" class="form-check-input" id="protected" {% if study.protected_area %}checked{% endif %}>
+                            <label class="form-check-label" for="protected">Охраняемая территория</label>
+                        </div>
+                        
+                        <hr>
+                        <div class="d-flex justify-content-between">
+                            <button type="submit" class="btn btn-primary">💾 Сохранить изменения</button>
+                            <a href="{{ url_for('study_detail', study_id=study.id) }}" class="btn btn-secondary">❌ Отмена</a>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

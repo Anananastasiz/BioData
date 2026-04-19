@@ -1,0 +1,109 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="container">
+    <h1 class="mb-4">BioTIME Biodiversity Database</h1>
+    <p class="lead">Управление и анализ долгосрочных данных о биоразнообразии</p>
+    
+    <div class="row mt-4 mb-5">
+        <div class="col-md-4">
+            <div class="card card-stats bg-primary text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Всего исследований</h5>
+                    <h2 class="display-4">{{ total_studies }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-stats bg-success text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Образцов данных</h5>
+                    <h2 class="display-4">{{ total_samples }}</h2>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="card card-stats bg-info text-white">
+                <div class="card-body">
+                    <h5 class="card-title">Среднее видов</h5>
+                    <h2 class="display-4">{{ avg_species }}</h2>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div class="row">
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Топ-10 биомов</h5>
+                </div>
+                <div class="card-body">
+                    <ul class="list-group">
+                        {% for biome, count in biome_stats %}
+                        <li class="list-group-item d-flex justify-content-between align-items-center">
+                            {{ biome if biome else 'Не указан' }}
+                            <span class="badge bg-primary rounded-pill">{{ count }}</span>
+                        </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="card">
+                <div class="card-header">
+                    <h5>Исследования по годам начала</h5>
+                </div>
+                <div class="card-body">
+                    <canvas id="yearChart" height="200"></canvas>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<script>
+    const yearData = {{ year_stats|tojson }};
+    console.log('Year data:', yearData);  // Для отладки
+    
+    if (yearData && yearData.length > 0) {
+        const ctx = document.getElementById('yearChart').getContext('2d');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: yearData.map(d => d[0]),  // год
+                datasets: [{
+                    label: 'Количество исследований',
+                    data: yearData.map(d => d[1]),  // количество
+                    borderColor: 'rgb(75, 192, 192)',
+                    tension: 0.1,
+                    fill: false
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: true,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        title: {
+                            display: true,
+                            text: 'Количество исследований'
+                        }
+                    },
+                    x: {
+                        title: {
+                            display: true,
+                            text: 'Год начала'
+                        }
+                    }
+                }
+            }
+        });
+    } else {
+        document.getElementById('yearChart').innerHTML = '<div class="alert alert-info">Нет данных для отображения</div>';
+    }
+</script>
+{% endblock %}
